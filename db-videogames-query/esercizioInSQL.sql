@@ -51,6 +51,14 @@ SELECT DISTINCT videogame_id
 FROM reviews 
 WHERE rating >= 5
 
+--BONUS
+
+--11- Selezionare il numero e la media delle recensioni per il videogioco con ID = 412 (review number = 12, avg_rating = 3)
+SELECT AVG(reviews.rating), COUNT(*) FROM reviews where reviews.videogame_id = 412
+
+--12- Selezionare il numero di videogame che la software house con ID = 1 ha rilasciato nel 2018 (13)
+SELECT COUNT(*) as numVideogiochi FROM videogames where videogames.software_house_id = 1 AND YEAR(release_date) = 2018
+
 --QUERY CON GROUP
 --1- Contare quante software house ci sono per ogni paese (3)
 SELECT software_houses.country, 
@@ -90,6 +98,7 @@ AVG(rating) AS mediaRecensioni
 FROM reviews 
 GROUP BY videogame_id 
 ORDER BY AVG(rating) 
+
 
 --QUERY CON JOIN
 
@@ -199,6 +208,25 @@ WHERE award_videogame.year = 2018
 AND awards.name LIKE '%atteso'
 AND tournaments.year = 2019
 
+--BONUS
 
+--10- Selezionare i dati della prima software house che ha rilasciato un gioco, assieme ai dati del gioco stesso (software house id : 5)
+SELECT  
+TOP 1 MIN(videogames.release_date) as primoVideogioco, 
+software_houses.id as id  
+FROM videogames 
+INNER JOIN software_houses
+on software_houses.id = videogames.software_house_id 
+GROUP BY software_houses.id 
+ORDER BY primoVideogioco
 
+--11- Selezionare i dati del videogame (id, name, release_date, totale recensioni) con più recensioni (videogame id : 398)
+SELECT 
+TOP 1 videogames.id,
+COUNT(reviews.id) AS num 
+FROM videogames 
+INNER JOIN reviews
+ON reviews.videogame_id = videogames.id 
+GROUP BY videogames.id 
+ORDER BY  num DESC
 
