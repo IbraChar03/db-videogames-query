@@ -1,3 +1,4 @@
+
 --SINGOLA TABELLA
 --1- Selezionare tutte le software house americane (3)
 SELECT * 
@@ -206,4 +207,28 @@ ON players.id = player_tournament.player_id
 WHERE award_videogame.year = 2018 
 AND awards.name LIKE '%atteso'
 AND tournaments.year = 2019
+
+--BONUS
+
+--10- Selezionare i dati della prima software house che ha rilasciato un gioco, assieme ai dati del gioco stesso (software house id : 5)
+SELECT  
+TOP 1 MIN(videogames.release_date) as primoVideogioco, 
+software_houses.id as id  
+FROM videogames 
+INNER JOIN software_houses
+on software_houses.id = videogames.software_house_id 
+GROUP BY software_houses.id 
+ORDER BY primoVideogioco
+
+--11- Selezionare i dati del videogame (id, name, release_date, totale recensioni) con più recensioni (videogame id : 398)
+SELECT 
+TOP 1 videogames.id,
+COUNT(reviews.id) AS num 
+FROM videogames 
+INNER JOIN reviews
+ON reviews.videogame_id = videogames.id 
+GROUP BY videogames.id 
+ORDER BY  num DESC
+
+
 
